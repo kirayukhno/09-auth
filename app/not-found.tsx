@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: '404 Notehub - Page Not Found',
         description: 'The page you are looking for could not be reached. Return to the NoteHub Homepage',
-        url: 'https://08-zustand-gray-iota.vercel.app/404',
+        url: 'https://09-auth-kappa-five.vercel.app/404',
         images: [
             {
                 url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
