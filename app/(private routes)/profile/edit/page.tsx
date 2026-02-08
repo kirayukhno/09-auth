@@ -7,11 +7,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/app/api/api";
 import { User } from "@/types/user";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function EditProfilePage() {
     const router = useRouter();
+    const { setUser } = useAuthStore();
 
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setLocalUser] = useState<User | null>(null);
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
 
@@ -19,7 +21,7 @@ export default function EditProfilePage() {
         const fetchUser = async () => {
             try {
                 const me = await getMe();
-                setUser(me);
+                setLocalUser(me);
                 setUsername(me.username);
             } catch {
                 router.push("/profile");
@@ -32,10 +34,10 @@ export default function EditProfilePage() {
     const handleSubmit = async (formdata: FormData) => {
         try {
             const formValues = Object.fromEntries(formdata) as UpdateMeRequest;
+            const updatedUser = await updateMe(formValues);
 
-            const response = await updateMe(formValues);
-
-            if (response) {
+            if (updatedUser) {
+                setUser(updatedUser);
                 router.push("/profile");
             } else {
                 setError("There is a mistake with updating.");

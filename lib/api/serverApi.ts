@@ -9,6 +9,7 @@ interface FetchNotesResponse{
 }
 
 export const fetchNotes = async (search: string, page: number, perPage = 12, tag?: string): Promise<FetchNotesResponse> => {
+    const cookieStore = await cookies();
     const { data } = await nextServer.get<FetchNotesResponse>(
         "/notes",
         {

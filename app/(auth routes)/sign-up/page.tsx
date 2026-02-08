@@ -4,17 +4,20 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RegisterRequest, register } from "@/lib/api/clientApi";
 import { ApiError } from "@/app/api/api";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function SignUpPage() {
     const router = useRouter();
+    const { setUser } = useAuthStore();
     const [error, setError] = useState('');
 
     const handleSubmit = async (formdata: FormData) => {
         try {
             const formValues = Object.fromEntries(formdata) as RegisterRequest;
-            const response = await register(formValues);
+            const user = await register(formValues);
 
-            if (response) {
+            if (user) {
+                setUser(user);
                 router.push("/profile");
             }
             else {

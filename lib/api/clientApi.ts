@@ -76,12 +76,12 @@ export const logout = async (): Promise<void> => {
     await nextServer.post("/auth/logout");
 };
 
-export const checkSession = async () => {
+export const checkSession = async (): Promise<boolean> => {
     const response = await nextServer.get<CheckSession>("/auth/session");
     return response.data.success;
 }
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
     const { data } = await nextServer.get<User>("/users/me");
     return data;
 };

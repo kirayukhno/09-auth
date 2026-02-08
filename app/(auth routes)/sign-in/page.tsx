@@ -4,17 +4,20 @@ import { LoginRequest, login } from "@/lib/api/clientApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/app/api/api";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function SignInPage() {
     const router = useRouter();
+    const { setUser } = useAuthStore();
     const [error, setError] = useState('');
     
     const handleSubmit = async (formdata: FormData) => {
         try {
             const formValues = Object.fromEntries(formdata) as LoginRequest;
-            const response = await login(formValues);
+            const user = await login(formValues);
 
-            if (response) {
+            if (user) {
+                setUser(user);
                 router.push("/profile");
             }
             else {
